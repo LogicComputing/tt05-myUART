@@ -37,6 +37,7 @@ module tt_um_myuart (
 
   assign uo_out[0] = uart_txd;
   assign uio_out = 8'h00;
+  assign uio_oe  = 8'h00;
   assign uo_out[7:1] = 7'h00;
 
   uart_tx uart_tx (
