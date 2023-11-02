@@ -30,7 +30,7 @@ module uart_tx (
   reg parity;
   reg [7:0] tx_data;
 
-  always @(posedge clk or negedge rst_n) begin
+  always @(posedge clk) begin
     if (~rst_n) begin
       state             <= IDLE;
       byte_counter      <= 8'd0;
@@ -124,7 +124,7 @@ module uart_tx (
   localparam COUNTER_FSM_COUNTING = 1'b1;  // State COUNTING
   reg [0:0] counter_state;
 
-  always @ (posedge clk or negedge rst_n) begin
+  always @ (posedge clk) begin
     if (~rst_n) begin
       counter       <= 8'b0;
       counter_it    <= 1'b0;

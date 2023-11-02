@@ -17,7 +17,6 @@ module tt_um_myuart (
 
     wire async_rstn = ena && rst_n;
     wire rst_n_clk;
-    wire rst_clk = !rst_n_clk;
 
     // Synchronize rst_n
     sync_async_reset inst_sync_async_reset (
@@ -84,7 +83,7 @@ module tt_um_myuart (
   reg counter_it;
 
   // FSM
-  always @(posedge clk or negedge rst_n_clk) begin
+  always @(posedge clk) begin
     if (~rst_n_clk) begin
       state         <= IDLE;
       byte_counter  <= 8'd0;
@@ -143,7 +142,7 @@ module tt_um_myuart (
 
   reg [31:0] counter;
 
-  always @ (posedge clk or negedge rst_n_clk) begin
+  always @ (posedge clk) begin
     if (~rst_n_clk) begin
       counter     <= 32'h0;
       counter_it  <= 1'b0;
