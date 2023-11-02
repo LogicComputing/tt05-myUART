@@ -79,9 +79,9 @@ module uart_tx (
         SEND_DATA : begin
           if (counter_it == 1'b1) begin
             if (byte_counter == 7) begin
-              state             <= SEND_STOP_BIT;
+              state             <= SEND_PARITY;
               counter_enable    <= 1'b1;
-              uart_txd          <= 1'b1;
+              uart_txd          <= parity;
             end
             else begin
               byte_counter      <= byte_counter + 1;
@@ -106,6 +106,10 @@ module uart_tx (
           end
         end
 
+        default : begin
+          state <= IDLE;
+        end
+
       endcase
   
     end
@@ -118,7 +122,7 @@ module uart_tx (
   // FSM's states
   localparam COUNTER_FSM_IDLE     = 1'b0;  // State IDLE
   localparam COUNTER_FSM_COUNTING = 1'b1;  // State COUNTING
-  reg [2:0] counter_state;
+  reg [0:0] counter_state;
 
   always @ (posedge clk or negedge rst_n) begin
     if (~rst_n) begin

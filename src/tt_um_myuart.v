@@ -37,6 +37,8 @@ module tt_um_myuart (
   reg [7:0] uart_tx_data;
 
   assign uo_out[0] = uart_txd;
+  assign uio_out = 8'h00;
+  assign uo_out[7:1] = 7'h00;
 
   uart_tx uart_tx (
     .clk(clk),                            // clock
@@ -125,6 +127,10 @@ module tt_um_myuart (
             end
           end
         end
+
+        default : begin
+          state <= IDLE;
+        end
     
       endcase
   
@@ -161,5 +167,4 @@ module tt_um_myuart (
       
     end
   end
-
 endmodule
