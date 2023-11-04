@@ -34,11 +34,13 @@ module tt_um_myuart (
   wire uart_tx_busy;
   wire uart_txd;
   reg [7:0] uart_tx_data;
+  reg signed  [7:0] sine_data;
+  reg [7:0] sine_counter;
 
   assign uo_out[0] = uart_txd;
   assign uio_out = 8'h00;
   assign uio_oe  = 8'h00;
-  assign uo_out[7:1] = 7'h00;
+  assign uo_out[7:1] = sine_data[7:1];
 
   uart_tx uart_tx (
     .clk(clk),                            // clock
@@ -118,7 +120,7 @@ module tt_um_myuart (
 
           if (uart_tx_done == 1'b1) begin
             byte_counter <= byte_counter + 1;
-            if (byte_counter < 8'd9) begin
+            if (byte_counter < 8'd10) begin
               state <= SEND;
             end
             else begin
@@ -167,4 +169,29 @@ module tt_um_myuart (
       
     end
   end
+
+  // #######################################################
+  // # BONUS : SINUS :) ####################################
+  // #######################################################
+
+    always @ (posedge clk) begin
+      if (~rst_n_clk) begin
+        sine_counter <= 8'h00;
+      end
+      else begin
+        sine_counter <= sine_counter + 1;
+      end
+    end
+
+    reg [7:0] sine_memory [0:255];
+    initial begin
+        $display("Loading rom.");
+        $readmemh("sine.mem", sine_memory);
+    end
+
+    // Compute the sine of our phase
+    always @(posedge clk) begin
+        sine_data = sine_memory[sine_counter];
+    end
+
 endmodule
