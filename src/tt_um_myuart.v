@@ -191,7 +191,7 @@ module tt_um_myuart (
 
     // Compute the sine of our phase
     always @(posedge clk) begin
-        sine_data = sine_memory[sine_counter];
+        sine_data <= sine_memory[sine_counter];
     end
 
 endmodule
